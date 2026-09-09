@@ -661,13 +661,39 @@
     </div>
   </div>
 
+  <!-- 데이터 전송을 위한 숨김 폼과 아이프레임 -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <form id="realSubmitForm" method="POST" target="hidden_iframe" style="display:none;">
+    <input type="hidden" name="date" id="post_date">
+    <input type="hidden" name="time" id="post_time">
+    <input type="hidden" name="branch" id="post_branch">
+    <input type="hidden" name="client" id="post_client">
+    <input type="hidden" name="phone" id="post_phone">
+    <input type="hidden" name="age" id="post_age">
+    <input type="hidden" name="family" id="post_family">
+    <input type="hidden" name="issues" id="post_issues">
+    <input type="hidden" name="inflow" id="post_inflow">
+    <input type="hidden" name="purchaseType" id="post_purchaseType">
+    <input type="hidden" name="budget" id="post_budget">
+    <input type="hidden" name="model" id="post_model">
+    <input type="hidden" name="target" id="post_target">
+    <input type="hidden" name="motor" id="post_motor">
+    <input type="hidden" name="covering" id="post_covering">
+    <input type="hidden" name="om" id="post_om">
+    <input type="hidden" name="gift" id="post_gift">
+    <input type="hidden" name="quote" id="post_quote">
+    <input type="hidden" name="contract" id="post_contract">
+    <input type="hidden" name="promotion" id="post_promotion">
+    <input type="hidden" name="staff" id="post_staff">
+    <input type="hidden" name="notes" id="post_notes">
+  </form>
+
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylksTdR48IU5GeSxw7H9HUulHr08B0FxE_PuOTeaL9rDIA5lrqINlP1FK0m-zAU-03/exec";
 
     function setDefaultTime() {
       const now = new Date();
       document.getElementById('consultDate').value = now.toISOString().split('T')[0];
-      // 방문시간 초기 세팅: 오후 02:00 (14:00)
       document.getElementById('visitTime').value = "14:00";
     }
 
@@ -687,50 +713,43 @@
         .map(el => el.value)
         .join(', ');
 
-      const formData = {
-        date: document.getElementById('consultDate').value,
-        time: document.getElementById('visitTime').value,
-        branch: document.getElementById('branchName').value,
-        client: document.getElementById('clientName').value,
-        phone: document.getElementById('clientPhone').value,
-        age: document.getElementById('ageGroup').value,
-        family: document.getElementById('family').value,
-        issues: selectedIssues,
-        inflow: document.getElementById('inflow').value,
-        purchaseType: document.getElementById('purchaseType').value,
-        budget: document.getElementById('budget').value,
-        model: document.getElementById('skuModel').value,
-        target: document.getElementById('userTarget').value,
-        motor: document.querySelector('input[name="motorUsage"]:checked')?.value || '',
-        covering: document.getElementById('covering').value,
-        om: document.querySelector('input[name="omConsult"]:checked')?.value || 'N',
-        gift: document.getElementById('giftItem').value,
-        quote: document.getElementById('quotePrice').value,
-        contract: document.getElementById('contractPrice').value,
-        promotion: document.getElementById('promotion').value,
-        staff: document.getElementById('staff').value,
-        notes: document.getElementById('notes').value
-      };
+      const clientName = document.getElementById('clientName').value;
 
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        body: JSON.stringify(formData)
-      })
-      .then(() => {
+      // 숨김 폼 필드에 값 전달
+      document.getElementById('post_date').value = document.getElementById('consultDate').value;
+      document.getElementById('post_time').value = document.getElementById('visitTime').value;
+      document.getElementById('post_branch').value = document.getElementById('branchName').value;
+      document.getElementById('post_client').value = clientName;
+      document.getElementById('post_phone').value = document.getElementById('clientPhone').value;
+      document.getElementById('post_age').value = document.getElementById('ageGroup').value;
+      document.getElementById('post_family').value = document.getElementById('family').value;
+      document.getElementById('post_issues').value = selectedIssues;
+      document.getElementById('post_inflow').value = document.getElementById('inflow').value;
+      document.getElementById('post_purchaseType').value = document.getElementById('purchaseType').value;
+      document.getElementById('post_budget').value = document.getElementById('budget').value;
+      document.getElementById('post_model').value = document.getElementById('skuModel').value;
+      document.getElementById('post_target').value = document.getElementById('userTarget').value;
+      document.getElementById('post_motor').value = document.querySelector('input[name="motorUsage"]:checked')?.value || '';
+      document.getElementById('post_covering').value = document.getElementById('covering').value;
+      document.getElementById('post_om').value = document.querySelector('input[name="omConsult"]:checked')?.value || 'N';
+      document.getElementById('post_gift').value = document.getElementById('giftItem').value;
+      document.getElementById('post_quote').value = document.getElementById('quotePrice').value;
+      document.getElementById('post_contract').value = document.getElementById('contractPrice').value;
+      document.getElementById('post_promotion').value = document.getElementById('promotion').value;
+      document.getElementById('post_staff').value = document.getElementById('staff').value;
+      document.getElementById('post_notes').value = document.getElementById('notes').value;
+
+      // 브라우저 CORS 제한을 우회하는 표준 Form 전송 실행
+      const form = document.getElementById('realSubmitForm');
+      form.action = GOOGLE_SCRIPT_URL;
+      form.submit();
+
+      setTimeout(() => {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        document.getElementById('modalDesc').innerText = `${formData.client} 고객님의 상담 일지가 마스터 시트에 성공적으로 등록되었습니다.`;
+        document.getElementById('modalDesc').innerText = `${clientName} 고객님의 상담 일지가 마스터 시트에 성공적으로 등록되었습니다.`;
         document.getElementById('successModal').style.display = 'flex';
-      })
-      .catch((error) => {
-        alert("전송 중 오류가 발생했습니다: " + error);
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      });
+      }, 1200);
     });
 
     function resetForm() {
