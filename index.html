@@ -635,11 +635,11 @@
           <label>계약 여부</label>
           <div class="segmented-control">
             <div class="segmented-item">
-              <input type="radio" id="contractStatusNo" name="contractStatus" value="계약 안함" checked />
+              <input type="radio" id="contractStatusNo" name="contractStatus" value="N" checked />
               <label for="contractStatusNo">계약 안함</label>
             </div>
             <div class="segmented-item">
-              <input type="radio" id="contractStatusYes" name="contractStatus" value="계약 완료" />
+              <input type="radio" id="contractStatusYes" name="contractStatus" value="Y" />
               <label for="contractStatusYes">계약 완료</label>
             </div>
           </div>
@@ -721,7 +721,7 @@
         gift: document.getElementById('giftItem').value,
         quote: document.getElementById('quotePrice').value,
         contract: document.getElementById('contractPrice').value,
-        contractStatus: document.querySelector('input[name="contractStatus"]:checked')?.value || '계약 안함',
+        contractStatus: document.querySelector('input[name="contractStatus"]:checked')?.value || 'N',
         promotion: document.getElementById('promotion').value,
         staff: document.getElementById('staff').value,
         notes: document.getElementById('notes').value
