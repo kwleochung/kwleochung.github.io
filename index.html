@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>던롭필로 고객 상담일지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --primary-navy: #0A192F;
+      --navy-card: #112240;
+      --navy-light: #233554;
+      --accent-gold: #C5A059;
+      --accent-gold-light: #DFBF77;
+      --text-white: #F8FAFC;
+      --text-muted: #94A3B8;
+      --input-bg: #FFFFFF;
+      --input-text: #1E293B;
+      --input-border: #CBD5E1;
+      --input-focus: #C5A059;
+      --success: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #070D18;
+      color: var(--text-white);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-image: radial-gradient(circle at 50% 0%, #152E52 0%, #070D18 70%);
+      background-attachment: fixed;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(17, 34, 64, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 32px 32px 24px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(10, 25, 47, 0.8) 0%, rgba(17, 34, 64, 0.4) 100%);
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+      margin: 0;
+    }
+
+    .form-content {
+      padding: 32px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      letter-spacing: 0.5px;
+    }
+
+    .section-title:first-child {
+      margin-top: 0;
+    }
+
+    .section-title i {
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 20px;
+    }
+
+    .col-span-2 {
+      grid-column: span 2;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    label .req {
+      color: var(--accent-gold);
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      background-color: #FFFFFF !important;
+      color: #0F172A !important;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #94A3B8 !important;
+      font-weight: 400;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.3);
+      background-color: #FFFFFF !important;
+    }
+
+    select option {
+      background-color: #FFFFFF !important;
+      color: #0F172A !important;
+      padding: 6px;
+    }
+
+    select optgroup {
+      background-color: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .chips-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip-label {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #334155;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .chip-label:hover {
+      background: #F8FAFC;
+      border-color: var(--accent-gold);
+    }
+
+    .chip-label input {
+      display: none;
+    }
+
+    .chip-label:has(input:checked) {
+      background: #0A192F;
+      border-color: var(--accent-gold);
+      color: var(--accent-gold-light);
+      font-weight: 600;
+    }
+
+    .segmented-control {
+      display: flex;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .segmented-item {
+      flex: 1;
+      text-align: center;
+    }
+
+    .segmented-item input {
+      display: none;
+    }
+
+    .segmented-item label {
+      display: block;
+      padding: 8px 12px;
+      font-size: 13px;
+      border-radius: 7px;
+      cursor: pointer;
+      color: #64748B;
+      font-weight: 500;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .segmented-item input:checked + label {
+      background: var(--primary-navy);
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .submit-area {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, #A88438 100%);
+      color: #0A192F;
+      border: none;
+      padding: 16px 48px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px -5px rgba(197, 160, 89, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(197, 160, 89, 0.5);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .notice {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal {
+      background: var(--navy-card);
+      border: 1px solid var(--accent-gold);
+      border-radius: 18px;
+      padding: 36px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 2px solid var(--success);
+      color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 16px;
+    }
+
+    .modal h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+    }
+
+    .modal p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .btn-modal {
+      background: var(--accent-gold);
+      color: #0A192F;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    @media (max-width: 680px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .col-span-2 {
+        grid-column: span 1;
+      }
+      .form-content {
+        padding: 20px;
+      }
+      .header {
+        padding: 24px 20px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header class="header">
+      <h1>던롭필로 고객 상담일지</h1>
+    </header>
+
+    <form id="consultationForm" class="form-content">
+      
+      <!-- 1. 상담 기본 정보 -->
+      <div class="section-title">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>1. 상담 기본 정보</span>
+      </div>
+      <div class="grid">
+        <div class="form-group">
+          <label>상담일자 <span class="req">*</span></label>
+          <input type="date" id="consultDate" required />
+        </div>
+        <div class="form-group">
+          <label>방문시간</label>
+          <input type="time" id="visitTime" />
+        </div>
+        <div class="form-group">
+          <label>지점명</label>
+          <select id="branchName">
+            <option value="">지점을 선택해주세요</option>
+            <optgroup label="[직영점]">
+              <option value="강남 본점">강남 본점</option>
+              <option value="파주 전시장/아울렛">파주 전시장/아울렛</option>
+              <option value="롯데아울렛 고양점">롯데아울렛 고양점</option>
+              <option value="갤러리아백화점 타임월드점">갤러리아백화점 타임월드점</option>
+              <option value="롯데몰 메종 동부산점">롯데몰 메종 동부산점</option>
+            </optgroup>
+            <optgroup label="[대리점]">
+              <option value="평택점">평택점</option>
+              <option value="동수원점">동수원점</option>
+              <option value="어정점">어정점</option>
+              <option value="대구점">대구점</option>
+              <option value="대구 텍스빌점">대구 텍스빌점</option>
+              <option value="송파점">송파점</option>
+              <option value="고척점">고척점</option>
+              <option value="논현점">논현점</option>
+              <option value="부천점">부천점</option>
+              <option value="분당점">분당점</option>
+              <option value="파주점">파주점</option>
+              <option value="기타 지점">기타 지점</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>상담 담당자</label>
+          <select id="staff">
+            <option value="">선택해주세요</option>
+            <option value="양연수 매니저">양연수 매니저 (강남)</option>
+            <option value="김민정 매니저">김민정 매니저 (파주)</option>
+            <option value="김종경 매니저">김종경 매니저 (고양)</option>
+            <option value="홍혜림 매니저">홍혜림 매니저 (타임월드)</option>
+            <option value="장정희 매니저">장정희 매니저 (동부산)</option>
+            <option value="김상규 프로">김상규 프로</option>
+            <option value="한장희 프로">한장희 프로</option>
+            <option value="김태완 프로">김태완 프로</option>
+            <option value="기타">기타 담당자</option>
+          </select>
+        </div>
+        <div class="form-group col-span-2">
+          <label>유입 경로</label>
+          <select id="inflow">
+            <option value="">선택해주세요</option>
+            <option value="네이버 검색/스마트플레이스">네이버 검색 / 스마트플레이스</option>
+            <option value="웨딩 카페 (다이렉트/맥마웨 등)">웨딩 제휴 카페 (다이렉트/맥마웨)</option>
+            <option value="인스타그램 / SNS">공식 인스타그램 / SNS</option>
+            <option value="지인 소개 및 추천">지인 소개 및 추천</option>
+            <option value="쇼핑몰/로드샵 도보 유입">쇼핑몰 / 로드샵 도보 유입</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 2. 고객 프로필 -->
+      <div class="section-title">
+        <i class="fa-solid fa-user"></i>
+        <span>2. 고객 프로필 & 수면 특성</span>
+      </div>
+      <div class="grid">
+        <div class="form-group">
+          <label>고객명 <span class="req">*</span></label>
+          <input type="text" id="clientName" placeholder="예: 홍길동" required />
+        </div>
+        <div class="form-group">
+          <label>연락처</label>
+          <input type="text" id="clientPhone" placeholder="010-0000-0000" />
+        </div>
+        <div class="form-group">
+          <label>연령대</label>
+          <select id="ageGroup">
+            <option value="">선택</option>
+            <option value="20대">20대</option>
+            <option value="30대">30대</option>
+            <option value="40대">40대</option>
+            <option value="50대">50대</option>
+            <option value="60대 이상">60대 이상</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>가족 구성</label>
+          <select id="family">
+            <option value="">선택</option>
+            <option value="신혼부부">신혼부부 (혼수)</option>
+            <option value="1인 가구">1인 가구</option>
+            <option value="자녀 있는 가구">자녀 있는 가구</option>
+            <option value="부모 동거 가구">부모 동거 가구</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>실제 사용자</label>
+          <select id="userTarget">
+            <option value="">선택</option>
+            <option value="부부">부부 공동 사용</option>
+            <option value="본인">본인 단독</option>
+            <option value="자녀">자녀용</option>
+            <option value="부모님">부모님 선물</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>구매 목적 (유형)</label>
+          <select id="purchaseType">
+            <option value="">선택</option>
+            <option value="신혼/혼수">신혼 / 혼수</option>
+            <option value="입주/이사">신규 입주 / 이사</option>
+            <option value="단순 노후 교체">기존 매트리스 노후 교체</option>
+            <option value="허리/건강 목적">허리 불편 등 건강 개선</option>
+            <option value="선물용">선물용</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label>주요 수면 고민 및 체형 특성 (중복 선택 가능)</label>
+        <div class="chips-group">
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="허리/요추 통증"> 허리 / 요추 통증</label>
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="목/어깨 뻐근함"> 목 / 어깨 결림</label>
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="잦은 뒤척임/숙면불가"> 잦은 뒤척임 / 얕은 수면</label>
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="열감/더위 민감"> 체온 조절 (더위/열감)</label>
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="부부 경도 취향 불일치"> 부부간 탄탄함/소프트 취향 차이</label>
+          <label class="chip-label"><input type="checkbox" name="sleepIssue" value="라텍스 선호"> 100% 천연라텍스 고유 탄성 선호</label>
+        </div>
+      </div>
+
+      <!-- 3. 관심 제품 및 상담 세부 내역 -->
+      <div class="section-title">
+        <i class="fa-solid fa-bed"></i>
+        <span>3. 관심 제품 및 상담 세부 내역</span>
+      </div>
+      <div class="grid">
+        <div class="form-group">
+          <label>관심 모델 (SKU)</label>
+          <select id="skuModel">
+            <option value="">모델을 선택하세요</option>
+            <optgroup label="[Signature 라인]">
+              <option value="로얄 소버린 (Royal Sovereign)">로얄 소버린 (Royal Sovereign)</option>
+              <option value="리즈 (Leeds)">리즈 (Leeds)</option>
+              <option value="더비 (Derby)">더비 (Derby)</option>
+              <option value="이모션 (Emocion - 전동용)">이모션 (Emocion)</option>
+              <option value="트라이엄프 (Triumph)">트라이엄프 (Triumph)</option>
+              <option value="플래티넘 (Platinum)">플래티넘 (Platinum)</option>
+              <option value="인피니트 (Infinite)">인피니트 (Infinite)</option>
+              <option value="오키드 V2 (Orchid V2)">오키드 V2 (Orchid V2)</option>
+            </optgroup>
+            <optgroup label="[Moments 라인]">
+              <option value="누베 (Nube)">누베 (Nube)</option>
+              <option value="필리 M/F (Filey)">필리 M / Filey F</option>
+              <option value="베네토 (Veneto)">베네토 (Veneto)</option>
+              <option value="로얄블루 360/330">로얄블루 360 / 330</option>
+              <option value="뷰티 (Beauty)">뷰티 (Beauty)</option>
+              <option value="펌레스트 (Firmrest)">펌레스트 (Firmrest)</option>
+              <option value="닥터슬립 L (Dr. Sleep L)">닥터슬립 L (Dr. Sleep L)</option>
+              <option value="기타 모델">기타 / 프레임 전용</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>전체 예산대</label>
+          <select id="budget">
+            <option value="">예산 선택</option>
+            <option value="100~200만원대">100만원 ~ 200만원대</option>
+            <option value="200~300만원대">200만원 ~ 300만원대</option>
+            <option value="300~500만원대">300만원 ~ 500만원대</option>
+            <option value="500~700만원대">500만원 ~ 700만원대</option>
+            <option value="700~1,000만원대">700만원 ~ 1,000만원대</option>
+            <option value="1,000만원 이상">1,000만원 이상 (하이엔드)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>전동 프레임 (모션베드) 사용</label>
+          <div class="segmented-control">
+            <div class="segmented-item">
+              <input type="radio" id="motorYes" name="motorUsage" value="사용" />
+              <label for="motorYes">사용 (모션)</label>
+            </div>
+            <div class="segmented-item">
+              <input type="radio" id="motorNo" name="motorUsage" value="미사용" checked />
+              <label for="motorNo">일반 프레임</label>
+            </div>
+            <div class="segmented-item">
+              <input type="radio" id="motorUndecided" name="motorUsage" value="미정" />
+              <label for="motorUndecided">미정</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>OM 상담 여부</label>
+          <div class="segmented-control">
+            <div class="segmented-item">
+              <input type="radio" id="omY" name="omConsult" value="Y" />
+              <label for="omY">Y (진행)</label>
+            </div>
+            <div class="segmented-item">
+              <input type="radio" id="omN" name="omConsult" value="N" checked />
+              <label for="omN">N (미진행)</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>커버링</label>
+          <input type="text" id="covering" placeholder="원단/커버 사양" />
+        </div>
+
+        <div class="form-group">
+          <label>적용 프로모션</label>
+          <input type="text" id="promotion" placeholder="예: 웨딩 제휴 10% 등" />
+        </div>
+
+        <div class="form-group col-span-2">
+          <label>사은품</label>
+          <input type="text" id="giftItem" placeholder="제공 사은품 내역 (예: 라텍스 베개 2EA, 방수 커버, 바디필로우 등)" />
+        </div>
+
+        <div class="form-group">
+          <label>견적가 (원)</label>
+          <input type="text" id="quotePrice" placeholder="예: 3,500,000" />
+        </div>
+
+        <div class="form-group">
+          <label>계약가 (원)</label>
+          <input type="text" id="contractPrice" placeholder="실제 결제/계약 금액" />
+        </div>
+
+        <div class="form-group col-span-2">
+          <label>상담 비고 및 특이사항</label>
+          <textarea id="notes" placeholder="고객 반응, 체감 경도 선호도, 배송 희망일, 다음 팔로업 일정 등을 입력하세요."></textarea>
+        </div>
+      </div>
+
+      <!-- 제출 버튼 -->
+      <div class="submit-area">
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <i class="fa-solid fa-check"></i>
+          <span>상담 일지 등록 완료</span>
+        </button>
+        <p class="notice">던롭필로 본사 마스터 시트(고객 상담일지)에 실시간 안전하게 저장됩니다.</p>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- 완료 모달 -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal">
+      <div class="modal-icon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3>상담 일지가 등록되었습니다</h3>
+      <p id="modalDesc">고객 상담 정보가 정상적으로 등록되었습니다.</p>
+      <button class="btn-modal" onclick="resetForm()">새 상담 작성하기</button>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1fUCzkODF1dC9QMfdjK-FJaCdTAJBHw6oofLHQ0eRks5O0WLEgEBsADOCEh9Qn3hw/exec";
+
+    function setDefaultTime() {
+      const now = new Date();
+      document.getElementById('consultDate').value = now.toISOString().split('T')[0];
+      // 방문시간 초기 세팅: 오후 02:00 (14:00)
+      document.getElementById('visitTime').value = "14:00";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setDefaultTime();
+    });
+
+    document.getElementById('consultationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>시트에 저장 중...</span>';
+      submitBtn.disabled = true;
+
+      const selectedIssues = Array.from(document.querySelectorAll('input[name="sleepIssue"]:checked'))
+        .map(el => el.value)
+        .join(', ');
+
+      const formData = {
+        date: document.getElementById('consultDate').value,
+        time: document.getElementById('visitTime').value,
+        branch: document.getElementById('branchName').value,
+        client: document.getElementById('clientName').value,
+        phone: document.getElementById('clientPhone').value,
+        age: document.getElementById('ageGroup').value,
+        family: document.getElementById('family').value,
+        issues: selectedIssues,
+        inflow: document.getElementById('inflow').value,
+        purchaseType: document.getElementById('purchaseType').value,
+        budget: document.getElementById('budget').value,
+        model: document.getElementById('skuModel').value,
+        target: document.getElementById('userTarget').value,
+        motor: document.querySelector('input[name="motorUsage"]:checked')?.value || '',
+        covering: document.getElementById('covering').value,
+        om: document.querySelector('input[name="omConsult"]:checked')?.value || 'N',
+        gift: document.getElementById('giftItem').value,
+        quote: document.getElementById('quotePrice').value,
+        contract: document.getElementById('contractPrice').value,
+        promotion: document.getElementById('promotion').value,
+        staff: document.getElementById('staff').value,
+        notes: document.getElementById('notes').value
+      };
+
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain"
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        document.getElementById('modalDesc').innerText = `${formData.client} 고객님의 상담 일지가 마스터 시트에 성공적으로 등록되었습니다.`;
+        document.getElementById('successModal').style.display = 'flex';
+      })
+      .catch((error) => {
+        alert("전송 중 오류가 발생했습니다: " + error);
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      });
+    });
+
+    function resetForm() {
+      document.getElementById('successModal').style.display = 'none';
+      document.getElementById('consultationForm').reset();
+      setDefaultTime();
+    }
+  </script>
+</body>
+</html>
