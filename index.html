@@ -296,6 +296,77 @@
       text-align: center;
     }
 
+    .consent-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .consent-text {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .consent-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #E2E8F0;
+      cursor: pointer;
+    }
+
+    .consent-check input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .signature-wrap {
+      position: relative;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #signaturePad {
+      display: block;
+      width: 100%;
+      height: 180px;
+      cursor: crosshair;
+    }
+
+    .signature-placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px;
+      color: #94A3B8;
+      pointer-events: none;
+    }
+
+    .btn-clear-signature {
+      align-self: flex-start;
+      margin-top: 8px;
+      background: transparent;
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: var(--accent-gold-light);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -432,6 +503,35 @@
       background: #F1F5F9;
       font-weight: 600;
       color: #334155;
+    }
+
+    #pdfTemplate .pdf-consent {
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    #pdfTemplate .pdf-signature-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      min-height: 70px;
+    }
+
+    #pdfTemplate .pdf-signature-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      flex-shrink: 0;
+    }
+
+    #pdfTemplate .pdf-signature-img {
+      height: 60px;
+      max-width: 260px;
+      object-fit: contain;
     }
 
     @media (max-width: 680px) {
@@ -598,11 +698,13 @@
             </optgroup>
             <optgroup label="[Moments 라인]">
               <option value="누베 (Nube)">누베 (Nube)</option>
-              <option value="필리 M/F (Filey)">필리 M / Filey F</option>
+              <option value="필리 F (Filey F)">필리 F (Filey F)</option>
+              <option value="필리 M (Filey M)">필리 M (Filey M)</option>
               <option value="베네토 FM">베네토 FM</option>
               <option value="헤리트 19">헤리트 19</option>
               <option value="헤리트 21">헤리트 21</option>
-              <option value="로얄블루 360/330">로얄블루 360 / 330</option>
+              <option value="로얄블루 360">로얄블루 360</option>
+              <option value="로얄블루 330">로얄블루 330</option>
               <option value="뷰티 (Beauty)">뷰티 (Beauty)</option>
               <option value="펌레스트 (Firmrest)">펌레스트 (Firmrest)</option>
               <option value="닥터슬립 L (Dr. Sleep L)">닥터슬립 L (Dr. Sleep L)</option>
@@ -682,6 +784,37 @@
         </div>
       </div>
 
+      <!-- 4. 개인정보 수집 및 이용 동의 / 서명 -->
+      <div class="section-title">
+        <i class="fa-solid fa-file-signature"></i>
+        <span>4. 개인정보 수집·이용 동의</span>
+      </div>
+
+      <div class="consent-box">
+        <p class="consent-text">
+          던롭필로 1929는 상담 및 사후 서비스 제공을 위해 아래와 같이 개인정보를 수집·이용합니다.<br>
+          · 수집 항목: 성명, 연락처<br>
+          · 수집 목적: 상담 이력 관리, 제품 안내 및 사후관리 연락<br>
+          · 보유 기간: 수집일로부터 3년<br>
+          고객님은 동의를 거부할 권리가 있으며, 동의하지 않을 경우 상담 진행 및 사후관리에 제한이 있을 수 있습니다.
+        </p>
+        <label class="consent-check">
+          <input type="checkbox" id="privacyConsent" />
+          <span>위 개인정보 수집 및 이용에 동의합니다. <span class="req">*</span></span>
+        </label>
+      </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label>고객 서명 <span class="req">*</span></label>
+        <div class="signature-wrap">
+          <canvas id="signaturePad"></canvas>
+          <div class="signature-placeholder" id="signaturePlaceholder">여기에 손가락(또는 마우스)으로 서명해주세요</div>
+        </div>
+        <button type="button" class="btn-clear-signature" id="clearSignatureBtn">
+          <i class="fa-solid fa-eraser"></i> 서명 지우기
+        </button>
+      </div>
+
       <!-- 제출 버튼 -->
       <div class="submit-area">
         <button type="submit" class="btn-submit" id="submitBtn">
@@ -728,10 +861,91 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       setDefaultTime();
+      initSignaturePad();
     });
+
+    // ===== 서명 캔버스 =====
+    let sigCtx = null;
+    let hasSignature = false;
+    let isDrawing = false;
+    let lastPoint = null;
+
+    function initSignaturePad() {
+      const canvas = document.getElementById('signaturePad');
+      const placeholder = document.getElementById('signaturePlaceholder');
+      const ratio = window.devicePixelRatio || 1;
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        const prevData = hasSignature ? canvas.toDataURL() : null;
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        sigCtx = canvas.getContext('2d');
+        sigCtx.scale(ratio, ratio);
+        sigCtx.lineWidth = 2.2;
+        sigCtx.lineCap = 'round';
+        sigCtx.lineJoin = 'round';
+        sigCtx.strokeStyle = '#0F172A';
+        if (prevData) {
+          const img = new Image();
+          img.onload = () => sigCtx.drawImage(img, 0, 0, rect.width, rect.height);
+          img.src = prevData;
+        }
+      }
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      const getPos = (evt) => {
+        const rect = canvas.getBoundingClientRect();
+        return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+      };
+
+      canvas.addEventListener('pointerdown', (evt) => {
+        isDrawing = true;
+        hasSignature = true;
+        placeholder.style.display = 'none';
+        lastPoint = getPos(evt);
+        canvas.setPointerCapture(evt.pointerId);
+      });
+
+      canvas.addEventListener('pointermove', (evt) => {
+        if (!isDrawing) return;
+        const p = getPos(evt);
+        sigCtx.beginPath();
+        sigCtx.moveTo(lastPoint.x, lastPoint.y);
+        sigCtx.lineTo(p.x, p.y);
+        sigCtx.stroke();
+        lastPoint = p;
+      });
+
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(evtName => {
+        canvas.addEventListener(evtName, () => { isDrawing = false; });
+      });
+
+      document.getElementById('clearSignatureBtn').addEventListener('click', () => {
+        const rect = canvas.getBoundingClientRect();
+        sigCtx.clearRect(0, 0, rect.width, rect.height);
+        hasSignature = false;
+        placeholder.style.display = 'block';
+      });
+    }
+
+    function getSignatureDataUrl() {
+      return hasSignature ? document.getElementById('signaturePad').toDataURL('image/png') : null;
+    }
 
     document.getElementById('consultationForm').addEventListener('submit', function(e) {
       e.preventDefault();
+
+      if (!document.getElementById('privacyConsent').checked) {
+        alert('개인정보 수집 및 이용에 동의해주셔야 상담 등록이 가능합니다.');
+        return;
+      }
+      if (!hasSignature) {
+        alert('고객 서명을 받아주세요.');
+        return;
+      }
 
       const submitBtn = document.getElementById('submitBtn');
       const originalText = submitBtn.innerHTML;
@@ -763,8 +977,10 @@
         contractStatus: document.querySelector('input[name="contractStatus"]:checked')?.value || 'N',
         promotion: document.getElementById('promotion').value,
         staff: document.getElementById('staff').value,
-        notes: document.getElementById('notes').value
+        notes: document.getElementById('notes').value,
+        privacyConsent: 'Y'
       };
+      const signatureDataUrl = getSignatureDataUrl();
 
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
@@ -776,6 +992,7 @@
       })
       .then(() => {
         lastFormData = formData;
+        lastSignatureDataUrl = signatureDataUrl;
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
         document.getElementById('modalDesc').innerText = `${formData.client} 고객님의 상담 일지가 마스터 시트에 성공적으로 등록되었습니다.`;
@@ -792,9 +1009,11 @@
       document.getElementById('successModal').style.display = 'none';
       document.getElementById('consultationForm').reset();
       setDefaultTime();
+      document.getElementById('clearSignatureBtn').click();
     }
 
     let lastFormData = null;
+    let lastSignatureDataUrl = null;
 
     document.getElementById('clientPhone').addEventListener('input', function() {
       const d = this.value.replace(/\D/g, '').slice(0, 11);
@@ -810,7 +1029,7 @@
       });
     });
 
-    function buildPdfTemplate(d) {
+    function buildPdfTemplate(d, sig) {
       const root = document.getElementById('pdfTemplate');
       root.textContent = '';
 
@@ -879,6 +1098,18 @@
         ['계약 여부', d.contractStatus === 'Y' ? '계약 완료' : '계약 안함'], ['', '']
       ]);
       section('', [['사은품', d.gift], ['상담 비고', d.notes]]);
+
+      root.appendChild(el('h2', '4. 개인정보 수집·이용 동의'));
+      root.appendChild(el('p', '위 고객은 상담 및 사후관리 목적의 개인정보 수집·이용에 동의하였습니다.', 'pdf-consent'));
+      const sigBox = el('div', undefined, 'pdf-signature-box');
+      sigBox.appendChild(el('span', '고객 서명', 'pdf-signature-label'));
+      if (sig) {
+        const img = document.createElement('img');
+        img.src = sig;
+        img.className = 'pdf-signature-img';
+        sigBox.appendChild(img);
+      }
+      root.appendChild(sigBox);
     }
 
     async function savePdf() {
@@ -894,7 +1125,7 @@
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PDF 생성 중...';
 
       try {
-        buildPdfTemplate(lastFormData);
+        buildPdfTemplate(lastFormData, lastSignatureDataUrl);
         if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
         const target = document.getElementById('pdfTemplate');
